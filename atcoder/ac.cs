@@ -5,47 +5,69 @@ using System.IO;
 
 namespace AC
 {
+    partial class Solver
+    {
+        public void Solve()
+        {
+            
+        }
+    }
+}
+
+namespace AC
+{
     public class shiokara
     {
         static void Main(string[] args)
         {
             var sr = new StreamReader(Console.OpenStandardInput());
-            var sc = new Scanner(sr);
-            var solver = new Solver(sc);
-
+            var Re = new Reader(sr);
+            var sw = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = false };
+            var Wr = new Writer(sw);
+            var solver = new Solver(Re, Wr);
+            solver.Solve();
+            sw.Flush();
         }
     }
 
-    public class Solver
+    partial class Solver
     {
-        private Scanner scanner;
-        public Solver(Scanner scanner){ this.scanner = scanner;}
+        private Reader reader;
+        private Writer writer;
+        public Solver(Reader reader, Writer writer){ this.reader = reader; this.writer = writer; }
 
-        public void Solve(){
+        public int[] Ints => reader.IntRL();
+        public int Int => reader.IntR();
+        public double[] Doubles => reader.DoubleRL();
+        public double Double => reader.DoubleR();
+        public long[] Longs => reader.LongRL();
+        public long Long => reader.LongR();
 
-        }
-
-        public int[] Ints => scanner.IntRL();
-        public int Int => scanner.IntR();
-        public double[] Doubles => scanner.DoubleRL();
-        public double Double => scanner.DoubleR();
-        public long[] Longs => scanner.LongRL();
-        public long Long => scanner.LongR();
+        public void WL(string s) => writer.WL(s);
+        public void WL(object o) => writer.WL(o);
     }
 
     //読み込む
-    public class Scanner
+    public class Reader
     {
         private TextReader reader;
-        public Scanner(TextReader reader){ this.reader = reader;}
+        public Reader(TextReader reader){ this.reader = reader; }
 
         public int[] IntRL() => reader.ReadLine().Split(' ').Select(int.Parse).ToArray();
         public int IntR() => int.Parse(reader.ReadLine());
-
         public double[] DoubleRL() => reader.ReadLine().Split(' ').Select(double.Parse).ToArray();
         public double DoubleR() => double.Parse(reader.ReadLine());
-
         public long[] LongRL() => reader.ReadLine().Split(' ').Select(long.Parse).ToArray();
         public long LongR() => long.Parse(reader.ReadLine());
+    }
+
+    //書き込む
+    public class Writer
+    {
+        private TextWriter writer;
+        public Writer(TextWriter writer){ this.writer = writer; }
+
+        public void WL(string w){ writer.WriteLine(w); }
+        public void WL(object o){ writer.WriteLine(o); }
     }
 }
