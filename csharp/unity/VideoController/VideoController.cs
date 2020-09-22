@@ -33,7 +33,7 @@ public class VideoController : MonoBehaviour
                     if(vp.isPlaying) vp.Pause();
                     else vp.Play();
                 }
-                else obj.GetComponent<VideoLoader>().loadkey = true;
+                else obj.GetComponent<VideoLoader>().LoadSequence();
             }
         }
     }

@@ -9,7 +9,6 @@ public class VideoLoader : MonoBehaviour
     private string relativePath;
 
     //loadの操作
-    public bool loadkey = false;
     public bool loaded = false;
 
     // Start is called before the first frame update
@@ -20,14 +19,13 @@ public class VideoLoader : MonoBehaviour
 
     void Update()
     {
-        if(loadkey && !loaded) LoadSequence();
+
     }
 
     //StreamingAssetsフォルダから動画のロードをするスクリプト
-    void LoadSequence()
+    public void LoadSequence()
     {
         loaded = true;
-        loadkey = false;
         VideoPlayer player = GetComponent<VideoPlayer>();
         player.source = VideoSource.Url;
         player.url = Application.streamingAssetsPath + "/" + relativePath;
