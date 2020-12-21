@@ -9,3 +9,18 @@ PImage flip(PImage img){
   }
   return tmp;
 }
+
+// 引数にある文字列を改行コードでパースする関数
+ArrayList<String> parser(String str){
+    int before = 0;
+    ArrayList<String> tmp = new ArrayList<String>();
+    for(int i = 0; i < str.length() - 1; i++){
+        if("\n".equals(str.substring(i,i+1))){
+            tmp.add(str.substring(before, i));
+            before = i + 2;
+        }else if(i == str.length() - 2){
+            tmp.add(str.substring(before, i + 2));
+        }
+    }
+    return tmp;
+}
