@@ -1,9 +1,54 @@
 // テクスチャ用の画像を左右反転させたい関数
 // Function to flip horizontal the image for the texture.
-PImage flip(PImage img){
+PImage horizontalFlip(PImage img){
   PImage tmp = createImage(img.width, img.height, RGB);
   for(int i = 0; i < img.height; i++){
     for(int j = img.width * i, k = (img.width * i) + (img.width - 1); j <= (img.width * i) + (img.width - 1); j++, k--){
+      tmp.pixels[k] = img.pixels[j];
+    }
+  }
+  return tmp;
+}
+
+// PGraphics用flip関数
+// Function to flip horizontal the PGraphics
+PGraphics horizontalFlip(PGraphics img){
+  //tmpの用意
+  PGraphics tmp = createGraphics(img.width, img.height);
+  tmp.beginDraw();
+  tmp.endDraw();
+
+  //移植処理
+  for(int i = 0; i < img.height; i++){
+    for(int j = img.width * i, k = (img.width * i) + (img.width - 1); j <= (img.width * i) + (img.width - 1); j++, k--){
+      tmp.pixels[k] = img.pixels[j];
+    }
+  }
+  return tmp;
+}
+
+// テクスチャ用の画像を上下反転させたい関数
+// Function to flip vertical the image for the texture.
+PImage verticalFlip(PImage img){
+  PImage tmp = createImage(img.width, img.height, RGB);
+  for(int i = 0; i < img.height; i++){
+    for(int j = img.width * i, k = img.width * (img.height - i - 1); j <= (img.width * i) + (img.width - 1); j++, k++){
+      tmp.pixels[k] = img.pixels[j];
+    }
+  }
+  return tmp;
+}
+
+// PGraphics用flip関数
+// Function to flip vertical the PGraphics
+PGraphics verticalFlip(PGraphics img){
+  //tmpの用意
+  PGraphics tmp = createGraphics(img.width, img.height);
+  tmp.beginDraw();
+  tmp.endDraw();
+  
+  for(int i = 0; i < img.height; i++){
+    for(int j = img.width * i, k = img.width * (img.height - i - 1); j <= (img.width * i) + (img.width - 1); j++, k++){
       tmp.pixels[k] = img.pixels[j];
     }
   }
