@@ -1,0 +1,60 @@
+name: Android CI
+
+on:
+  push:
+    branches:
+      - release/v[0-9]+.[0-9]+ # releaseブランチにpushされた時開始 将来的にmainブランチにpushされた時にしたい
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest # ubuntuの最新版使うよ
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK # JDKのセットアップだよ
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Grant execute permission for gradlew # gradlewの実行権限を付与するよ
+        run: chmod +x gradlew
+      - name: Build with Gradle # 実際にビルドするよ これが一番長いよ
+        run: ./gradlew build
+      - name: Upload apk file # apkファイルをartifactに置くよ
+        uses: actions/upload-artifact@v2
+        with:
+          name: apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Get Version # ブランチ名からバージョンとって環境変数にするよ 将来的にここをどうにかしたいね
+        id: version
+        env: 
+          REF: ${{ github.ref }}
+        run: echo ::set-output name=VERSION::${REF#refs/heads/release/v}
+      - name: Create Release # リリースするよ
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version.outputs.VERSION }}
+          release_name: v${{ steps.version.outputs.VERSION }}
+          body: |+
+            ## Bug fixes
+            -
+
+            ## Features
+            -
+
+            ## BREAKING CHANGES
+            -
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset # リリースする際にapkファイルを他と別で付与するよ
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: app/build/outputs/apk/debug/app-debug.apk
+          asset_name: ShakeDetector.apk
+          asset_content_type: application/apk
